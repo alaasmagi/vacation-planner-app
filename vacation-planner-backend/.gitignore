@@ -430,6 +430,7 @@ FodyWeavers.xsd
 
 .idea/
 
+/bin
 *.suo
 *.user
 .vs/

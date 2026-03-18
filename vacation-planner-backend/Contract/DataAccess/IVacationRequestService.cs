@@ -1,6 +1,9 @@
-namespace Contracts;
+using Base.Contracts.Application;
+using DTO.Presentation;
 
-public interface IVacationRequestService
+namespace Contract.DataAccess;
+
+public interface IVacationRequestService : IBaseService<VacationRequestDto>
 {
     
 }

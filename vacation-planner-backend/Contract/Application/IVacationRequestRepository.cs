@@ -1,6 +1,8 @@
-namespace Contracts;
+using Base.Contracts.DataAccess;
+using Domain;
 
-public interface IVacationRequestRepository
+namespace Contract.Application;
+
+public interface IVacationRequestRepository : IBaseRepository<VacationRequest>
 {
-    
 }

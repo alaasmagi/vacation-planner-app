@@ -4,10 +4,15 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>DTO</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DataAccess\Mappers\" />
+      <PackageReference Include="alaasmagi.Base.Contracts.DTO" Version="1.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
 </Project>

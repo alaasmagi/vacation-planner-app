@@ -1,6 +1,9 @@
-namespace Infrastructure.DataAccess;
+using DTO.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext
+namespace DataAccess;
+
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    
+    public DbSet<VacationRequestEntity> VacationRequests { get; set; }
 }
