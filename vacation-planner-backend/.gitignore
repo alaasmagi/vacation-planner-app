@@ -1,5 +1,5 @@
-bin/
-obj/
+**/bin/
+**/obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
@@ -445,3 +445,6 @@ Desktop.ini
 
 .env
 .pem
+
+.idea/
+Web/wwwroot/lib/
