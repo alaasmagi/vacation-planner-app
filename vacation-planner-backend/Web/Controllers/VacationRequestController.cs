@@ -1,28 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Contract.DataAccess;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DTO.DataAccess;
-using DataAccess;
+using DTO.Presentation;
 
 namespace Web.Controllers
 {
     public class VacationRequestController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IVacationRequestService _service;
 
-        public VacationRequestController(AppDbContext context)
+        public VacationRequestController(IVacationRequestService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: VacationRequest
         public async Task<IActionResult> Index()
         {
-            return View(await _context.VacationRequests.ToListAsync());
+            return View(await _service.GetAllAsync());
         }
 
         // GET: VacationRequest/Details/5
@@ -33,14 +29,13 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var vacationRequestEntity = await _context.VacationRequests
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vacationRequestEntity == null)
+            var vacationRequest = await _service.GetByIdAsync(id.Value);
+            if (vacationRequest == null)
             {
                 return NotFound();
             }
 
-            return View(vacationRequestEntity);
+            return View(vacationRequest);
         }
 
         // GET: VacationRequest/Create
@@ -54,16 +49,15 @@ namespace Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,StartDate,EndDate,Comment,Status,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] VacationRequestEntity vacationRequestEntity)
+        public async Task<IActionResult> Create([Bind("EmployeeId,StartDate,EndDate,Comment,Status,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] VacationRequestDto vacationRequest)
         {
             if (ModelState.IsValid)
             {
-                vacationRequestEntity.Id = Guid.NewGuid();
-                _context.Add(vacationRequestEntity);
-                await _context.SaveChangesAsync();
+                vacationRequest.Id = Guid.NewGuid();
+                await _service.CreateAsync(vacationRequest, vacationRequest.EmployeeId);
                 return RedirectToAction(nameof(Index));
             }
-            return View(vacationRequestEntity);
+            return View(vacationRequest);
         }
 
         // GET: VacationRequest/Edit/5
@@ -74,12 +68,12 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var vacationRequestEntity = await _context.VacationRequests.FindAsync(id);
-            if (vacationRequestEntity == null)
+            var vacationRequest = await _service.GetByIdAsync(id.Value);
+            if (vacationRequest == null)
             {
                 return NotFound();
             }
-            return View(vacationRequestEntity);
+            return View(vacationRequest);
         }
 
         // POST: VacationRequest/Edit/5
@@ -87,9 +81,9 @@ namespace Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("EmployeeId,StartDate,EndDate,Comment,Status,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] VacationRequestEntity vacationRequestEntity)
+        public async Task<IActionResult> Edit(Guid id, [Bind("EmployeeId,StartDate,EndDate,Comment,Status,CreatedBy,CreatedAt,UpdatedBy,UpdatedAt,Id")] VacationRequestDto vacationRequest)
         {
-            if (id != vacationRequestEntity.Id)
+            if (id != vacationRequest.Id)
             {
                 return NotFound();
             }
@@ -98,12 +92,11 @@ namespace Web.Controllers
             {
                 try
                 {
-                    _context.Update(vacationRequestEntity);
-                    await _context.SaveChangesAsync();
+                    await _service.UpdateAsync(id, vacationRequest, vacationRequest.EmployeeId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VacationRequestEntityExists(vacationRequestEntity.Id))
+                    if (!await VacationRequestEntityExists(vacationRequest.Id))
                     {
                         return NotFound();
                     }
@@ -114,7 +107,7 @@ namespace Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vacationRequestEntity);
+            return View(vacationRequest);
         }
 
         // GET: VacationRequest/Delete/5
@@ -125,14 +118,13 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var vacationRequestEntity = await _context.VacationRequests
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vacationRequestEntity == null)
+            var vacationRequest = await _service.GetByIdAsync(id.Value);
+            if (vacationRequest == null)
             {
                 return NotFound();
             }
 
-            return View(vacationRequestEntity);
+            return View(vacationRequest);
         }
 
         // POST: VacationRequest/Delete/5
@@ -140,19 +132,18 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var vacationRequestEntity = await _context.VacationRequests.FindAsync(id);
+            var vacationRequestEntity = await _service.GetByIdAsync(id);
             if (vacationRequestEntity != null)
             {
-                _context.VacationRequests.Remove(vacationRequestEntity);
+                await _service.RemoveAsync(id);
             }
-
-            await _context.SaveChangesAsync();
+            
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VacationRequestEntityExists(Guid id)
+        private async Task<bool> VacationRequestEntityExists(Guid id)
         {
-            return _context.VacationRequests.Any(e => e.Id == id);
+            return await _service.ExistsAsync(id);
         }
     }
 }

@@ -10,10 +10,14 @@ using DTO.DataAccess;
 using DTO.DataAccess.Mappers;
 using DTO.Presentation;
 using DTO.Presentation.Mappers;
+using Helpers;
 using Microsoft.EntityFrameworkCore;
 
+DotNetEnv.Env.Load("../.env");
 var builder = WebApplication.CreateBuilder(args);
 
+var envInitializer = new EnvInitializer();
+envInitializer.InitializeEnv();
 
 // Services
 builder.Services.AddControllersWithViews();
@@ -21,10 +25,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // DbContext
+var connectionString = builder.Environment.IsDevelopment()
+    ? envInitializer.DbConnectionDevelopment
+    : envInitializer.DbConnection;
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+    options.UseSqlite(connectionString));
 
 // DI
+builder.Services.AddSingleton(envInitializer);
 builder.Services.AddScoped<IVacationRequestService, VacationRequestService>();
 builder.Services.AddScoped<IVacationRequestRepository, VacationRequestRepository>();
 builder.Services.AddScoped<IBaseUow, BaseUow<AppDbContext>>();
@@ -35,7 +44,7 @@ builder.Services.AddScoped<IMapper<VacationRequestDto, VacationRequest>, Vacatio
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
-        policy.WithOrigins("https://localhost:8080")
+        policy.WithOrigins(envInitializer.FrontendUrl)
             .AllowAnyHeader()
             .AllowAnyMethod());
 });

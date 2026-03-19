@@ -10,6 +10,6 @@ public class VacationRequestDto : BaseEntity
     public DateOnly EndDate { get; set; }
     public string? Comment { get; set; }
     public EVacationStatus Status { get; set; }
-    public int DurationDays {get; set;}
-    public bool IsOverTime {get; set;}
+    public int? DurationDays {get; set;}
+    public bool? IsOverTime {get; set;}
 }

@@ -8,11 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="alaasmagi.Base.Contracts.DTO" Version="1.0.4" />
+      <PackageReference Include="alaasmagi.Base.Contracts.DTO" Version="1.0.7" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Helpers\Helpers.csproj" />
     </ItemGroup>
 
 </Project>

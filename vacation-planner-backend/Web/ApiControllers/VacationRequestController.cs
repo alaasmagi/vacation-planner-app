@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Contract.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DTO.DataAccess;
-using DataAccess;
+using DTO.Presentation;
 
 namespace Web.ApiControllers
 {
@@ -14,60 +10,57 @@ namespace Web.ApiControllers
     [ApiController]
     public class VacationRequestController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IVacationRequestService _service;
 
-        public VacationRequestController(AppDbContext context)
+        public VacationRequestController(IVacationRequestService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/VacationRequest
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VacationRequestEntity>>> GetVacationRequests()
+        public async Task<ActionResult<IEnumerable<VacationRequestDto>>> GetVacationRequests()
         {
-            return await _context.VacationRequests.ToListAsync();
+            var vacationRequests = await _service.GetAllAsync();
+            return Ok(vacationRequests);
         }
 
-        // GET: api/VacationRequest/5
+        // GET: api/VacationRequest/ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<VacationRequestEntity>> GetVacationRequestEntity(Guid id)
+        public async Task<ActionResult<VacationRequestDto>> GetVacationRequestEntity(Guid id)
         {
-            var vacationRequestEntity = await _context.VacationRequests.FindAsync(id);
+            var vacationRequest = await _service.GetByIdAsync(id);
 
-            if (vacationRequestEntity == null)
+            if (vacationRequest == null)
             {
                 return NotFound();
             }
 
-            return vacationRequestEntity;
+            return vacationRequest;
         }
 
-        // PUT: api/VacationRequest/5
+        // PUT: api/VacationRequest/ID
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVacationRequestEntity(Guid id, VacationRequestEntity vacationRequestEntity)
+        public async Task<IActionResult> PutVacationRequestEntity(Guid id, VacationRequestDto vacationRequest)
         {
-            if (id != vacationRequestEntity.Id)
+            if (id != vacationRequest.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(vacationRequestEntity).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.UpdateAsync(id, vacationRequest);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VacationRequestEntityExists(id))
+                if (!await VacationRequestEntityExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                
+                throw;
             }
 
             return NoContent();
@@ -76,33 +69,28 @@ namespace Web.ApiControllers
         // POST: api/VacationRequest
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<VacationRequestEntity>> PostVacationRequestEntity(VacationRequestEntity vacationRequestEntity)
+        public async Task<ActionResult<VacationRequestEntity>> PostVacationRequestEntity(VacationRequestDto vacationRequest)
         {
-            _context.VacationRequests.Add(vacationRequestEntity);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetVacationRequestEntity", new { id = vacationRequestEntity.Id }, vacationRequestEntity);
+            await _service.CreateAsync(vacationRequest);
+            
+            return CreatedAtAction("GetVacationRequestEntity", new { id = vacationRequest.Id }, vacationRequest);
         }
 
         // DELETE: api/VacationRequest/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVacationRequestEntity(Guid id)
         {
-            var vacationRequestEntity = await _context.VacationRequests.FindAsync(id);
-            if (vacationRequestEntity == null)
+            if (await _service.RemoveAsync(id))
             {
                 return NotFound();
             }
 
-            _context.VacationRequests.Remove(vacationRequestEntity);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool VacationRequestEntityExists(Guid id)
+        private async Task<bool> VacationRequestEntityExists(Guid id)
         {
-            return _context.VacationRequests.Any(e => e.Id == id);
+            return await _service.ExistsAsync(id);
         }
     }
 }

@@ -1,9 +1,10 @@
 using Base.Contracts.DTO;
 using Domain;
+using Helpers;
 
 namespace DTO.Presentation.Mappers;
 
-public class VacationRequestDtoMapper : IMapper<VacationRequestDto, VacationRequest>
+public class VacationRequestDtoMapper(EnvInitializer envInitializer) : IMapper<VacationRequestDto, VacationRequest>
 {
     public VacationRequestDto? Map(VacationRequest? entity)
     {
@@ -32,7 +33,7 @@ public class VacationRequestDtoMapper : IMapper<VacationRequestDto, VacationRequ
     {
         if (entity == null) return null;
     
-        return new VacationRequest
+        return new VacationRequest(envInitializer.DefaultVacationLength)
         {
             Id = entity.Id,
             StartDate = entity.StartDate,

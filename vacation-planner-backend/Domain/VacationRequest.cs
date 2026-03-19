@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public class VacationRequest : BaseEntity
+public class VacationRequest(int defaultVacationLength) : BaseEntity
 { 
     public Guid EmployeeId { get; set; }
     public DateOnly StartDate { get; set; }
@@ -14,5 +14,5 @@ public class VacationRequest : BaseEntity
                            && StartDate >= DateOnly.FromDateTime(DateTime.Today);
 
     public int DurationDays => EndDate.DayNumber - StartDate.DayNumber;
-    public bool IsOverTime => DurationDays > 28;
+    public bool IsOverTime => DurationDays > defaultVacationLength;
 }

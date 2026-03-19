@@ -1,15 +1,16 @@
 using Base.Contracts.DTO;
 using Domain;
+using Helpers;
 
 namespace DTO.DataAccess.Mappers;
 
-public class VacationRequestMapper : IMapper<VacationRequest, VacationRequestEntity>
+public class VacationRequestMapper(EnvInitializer envInitializer) : IMapper<VacationRequest, VacationRequestEntity>
 {
     public VacationRequest? Map(VacationRequestEntity? entity)
     {
         if (entity == null) return null;
     
-        return new VacationRequest
+        return new VacationRequest(envInitializer.DefaultVacationLength)
         {
             Id = entity.Id,
             StartDate = entity.StartDate,
