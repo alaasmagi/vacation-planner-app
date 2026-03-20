@@ -117,13 +117,13 @@ The core and base logic of the application is modularized into separate NuGet pa
 
 The project currently contains these NuGet packages:
 
-- `alaasmagi.Base.Domain` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Domain)
-- `alaasmagi.Base.Contracts.DTO` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DTO)
-- `alaasmagi.Base.DTO` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.DTO)
-- `alaasmagi.Base.Contracts.DataAccess` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DataAccess)
-- `alaasmagi.Base.DataAccess.EF` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.DataAccess.EF)
-- `alaasmagi.Base.Contracts.Application` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.Application)
-- `alaasmagi.Base.Application` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Application)
+- `alaasmagi.Base.Domain` - [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Domain)
+- `alaasmagi.Base.Contracts.DTO` - [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DTO)
+- `alaasmagi.Base.DTO` - [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.DTO)
+- `alaasmagi.Base.Contracts.DataAccess` - [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DataAccess)
+- `alaasmagi.Base.DataAccess.EF` - [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.DataAccess.EF)
+- `alaasmagi.Base.Contracts.Application` - [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.Application)
+- `alaasmagi.Base.Application` - [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Application)
 
 
 #### Domain layer
