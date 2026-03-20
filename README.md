@@ -112,7 +112,9 @@ vacation-planner-backend
       └── wwwroot
 ```
 
-#### Base NuGet package
+#### alaasmagi.Base.* NuGet packages
+The core and base logic of the application is modularized into separate NuGet packages **alaasmagi.Base.** [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain), containing reusable domain models, shared abstractions and foundational realisation components. This package is developed and maintained by myself and serves as a shared base across projects.
+
 
 
 
