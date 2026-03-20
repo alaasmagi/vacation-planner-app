@@ -39,6 +39,7 @@ builder.Services.AddScoped<IVacationRequestRepository, VacationRequestRepository
 builder.Services.AddScoped<IBaseUow, BaseUow<AppDbContext>>();
 builder.Services.AddScoped<IMapper<VacationRequest, VacationRequestEntity>, VacationRequestMapper>();
 builder.Services.AddScoped<IMapper<VacationRequestDto, VacationRequest>, VacationRequestDtoMapper>();
+builder.Services.AddScoped<IMapper<VacationRequestDto, VacationRequestWebDto>, VacationRequestWebDtoMapper>();
 
 // CORS
 builder.Services.AddCors(options =>

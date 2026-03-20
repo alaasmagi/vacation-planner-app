@@ -5,5 +5,4 @@ public enum EVacationStatus
     Pending,
     Approved,
     Rejected,
-    Cancelled
 }

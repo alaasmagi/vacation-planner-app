@@ -21,7 +21,7 @@ namespace Web.Controllers
             return View(await _service.GetAllAsync());
         }
 
-        // GET: VacationRequest/Details/5
+        // GET: VacationRequest/Details/ID
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -29,13 +29,13 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var vacationRequest = await _service.GetByIdAsync(id.Value);
-            if (vacationRequest == null)
+            var response = await _service.GetByIdAsync(id.Value);
+            if (!response.Successful)
             {
-                return NotFound();
+                return BadRequest(response.Error);
             }
 
-            return View(vacationRequest);
+            return View(response.Value);
         }
 
         // GET: VacationRequest/Create
@@ -60,7 +60,7 @@ namespace Web.Controllers
             return View(vacationRequest);
         }
 
-        // GET: VacationRequest/Edit/5
+        // GET: VacationRequest/Edit/ID
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -68,15 +68,15 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var vacationRequest = await _service.GetByIdAsync(id.Value);
-            if (vacationRequest == null)
+            var response = await _service.GetByIdAsync(id.Value);
+            if (!response.Successful)
             {
-                return NotFound();
+                return BadRequest(response.Error);
             }
-            return View(vacationRequest);
+            return View(response.Value);
         }
 
-        // POST: VacationRequest/Edit/5
+        // POST: VacationRequest/Edit/ID
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -100,17 +100,15 @@ namespace Web.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(vacationRequest);
         }
 
-        // GET: VacationRequest/Delete/5
+        // GET: VacationRequest/Delete/ID
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -118,22 +116,23 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var vacationRequest = await _service.GetByIdAsync(id.Value);
-            if (vacationRequest == null)
+            var response = await _service.GetByIdAsync(id.Value);
+            if (!response.Successful)
             {
-                return NotFound();
+                return BadRequest(response.Error);
             }
 
-            return View(vacationRequest);
+            return View(response.Value);
         }
 
-        // POST: VacationRequest/Delete/5
+        // POST: VacationRequest/Delete/ID
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var vacationRequestEntity = await _service.GetByIdAsync(id);
-            if (vacationRequestEntity != null)
+            var response = await _service.GetByIdAsync(id);
+            
+            if (response.Successful)
             {
                 await _service.RemoveAsync(id);
             }
@@ -143,7 +142,8 @@ namespace Web.Controllers
 
         private async Task<bool> VacationRequestEntityExists(Guid id)
         {
-            return await _service.ExistsAsync(id);
+            var response = await _service.ExistsAsync(id);
+            return response.Successful;
         }
     }
 }
