@@ -5,11 +5,7 @@ import { deleteVacationRequest, fetchVacationRequestById } from "../api"
 import { type VacationRequestDto } from "../types"
 import { Loading } from "../components/Loading"
 import { getErrorMessageEt } from "../utils/ui"
-
-function formatDate(date: string) {
-  const [y, m, d] = date.split("-")
-  return `${d}.${m}.${y}`
-}
+import { formatDate } from "../utils"
 
 export default function Details() {
   const navigate = useNavigate()
@@ -101,32 +97,24 @@ export default function Details() {
             </button>
           </div>
           {error && <div className="alert alert-danger">{error}</div>}
-          <div className="row g-3 mb-4">
-            <div className="col-12 col-md-3">
+          <div className="row g-4 mb-4">
+            <div className="col-12 col-md-4">
               <div className="bg-body-tertiary border border-secondary-subtle rounded-4 p-3 h-100">
                 <div className="text-secondary small mb-1">Algus</div>
                 <div className="fw-semibold">{formatDate(vacationRequest.startDate)}</div>
               </div>
             </div>
-            <div className="col-12 col-md-3">
+            <div className="col-12 col-md-4">
               <div className="bg-body-tertiary border border-secondary-subtle rounded-4 p-3 h-100">
                 <div className="text-secondary small mb-1">Lõpp</div>
                 <div className="fw-semibold">{formatDate(vacationRequest.endDate)}</div>
               </div>
             </div>
-            <div className="col-12 col-md-3">
+            <div className="col-12 col-md-4">
               <div className="bg-body-tertiary border border-secondary-subtle rounded-4 p-3 h-100">
                 <div className="text-secondary small mb-1">Kestus</div>
                 <div className="fw-semibold">
                   {vacationRequest.durationDays} {vacationRequest.durationDays === 1 ? "päev" : "päeva"}
-                </div>
-              </div>
-            </div>
-            <div className="col-12 col-md-3">
-              <div className="bg-body-tertiary border border-secondary-subtle rounded-4 p-3 h-100">
-                <div className="text-secondary small mb-1">Tüüp</div>
-                <div className="fw-semibold">
-                  {vacationRequest.isOverTime ? "Ületunnid" : "Puhkus"}
                 </div>
               </div>
             </div>
