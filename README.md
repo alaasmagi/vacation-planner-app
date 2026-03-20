@@ -300,10 +300,11 @@ Additional tests could still improve confidence in edge cases and integration be
 ### React UI
 
 * **Home view:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/c16f6a9d-f195-4fee-b46b-5f20dfa8efcd" /><img width="99" height="220" alt="Screenshot_20260320-191412" src="https://github.com/user-attachments/assets/4d0654a7-cf52-4600-8bea-4c25cf48ef12" />
-* **Details view:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/c16f6a9d-f195-4fee-b46b-5f20dfa8efcd" />
 
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/9ca7871f-fe9e-4552-a5d1-5d36922371be" />  
+* **Details view:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/9ca7871f-fe9e-4552-a5d1-5d36922371be" />
+
 * **Create/Edit view:**  
 <img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/15052456-7fd0-4c12-84f9-11b247f1d46e" />
 
