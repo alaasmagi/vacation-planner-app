@@ -310,12 +310,15 @@ Additional tests could still improve confidence in edge cases and integration be
 
 * **Index:**  
 <img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/cc2b3538-ca8c-4e08-9d27-9896962e6a4e" />  
-* **VacationRequest Index:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/72cda25b-d817-435e-9837-0a11ebd3444c" />  
-* **VacationRequest Details:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/58ec6cc8-f486-4f0c-a43d-5c2da9388180" />  
+
+* **VacationRequest Index:**
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/79b2ed7d-38b6-4c35-9041-c4fdb5802c7f" />
+
+* **VacationRequest Details:**
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/75fe2fd1-81f6-42b8-81f2-70a57773ea49" />
+
 * **VacationRequest Create/Edit:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/d940139f-b0e5-466c-9fdd-729d49ab36bb" />
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/580f86e8-3691-4aaf-bfa6-67a3db816e60" />
 
 
 ## Improvements & scaling possibilities
