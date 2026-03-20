@@ -213,6 +213,10 @@ The project has two UIs:
 * **PUT** - `/api/VacationRequest/{ID}`: Updates one VacationRequest.
 * **DELETE** - `/api/VacationRequest/{ID}`: Deletes one VacationRequest.
 
+* Endpoints are documented with Swagger, which is available via `/api/swagger`:
+<img width="1447" height="327" alt="image" src="https://github.com/user-attachments/assets/0c85c862-e43f-4090-a8e8-54d70135d163" />
+
+
 ### Frontend structure
 ```
 src
@@ -260,6 +264,29 @@ src
 * **Details** - View for employees to display one specific VacationRequest.
 * **Edit** - View for employess to create or edit VacationRequest.
 
+## Design choices
+
+### Database  
+I kept persistence lightweight with SQLite and a single-entity data model. That keeps the schema small, easy to reason about, and fast to evolve. IDs use GUIDs (via the shared BaseEntity), which is a standard, low-collision approach. For request state I use an enum (Pending/Approved/Rejected) to avoid stringly-typed status bugs.
+
+### Backend
+The backend follows a clean, layered structure: Domain holds the core entity and rules, Application contains the business service, DataAccess isolates EF Core and repositories, and Web exposes both MVC and REST endpoints. Contracts and DTOs sit between layers to keep dependencies explicit and map only the fields needed for each boundary. I also reuse my own alaasmagi.Base.* NuGet packages for shared abstractions and base classes, so the project stays consistent with other apps.
+
+### Frontend
+The client is a focused React + TypeScript SPA used by employees. It talks to the REST API and keeps the UI simple: submit a request, view existing requests, and check status. Admins/managers use the separate MVC UI served by the backend, so the employee-facing SPA stays clean and lightweight.
+
+## Features
+
+Main application features include:
+
+* Vacation request creation with start/end dates and optional comment
+* Automatic validation of date ranges and duration
+* Status tracking with Pending, Approved, Rejected
+* Full CRUD REST API for vacation requests
+* React SPA for employees
+* MVC UI for managers/admins
+* Environment-driven configuration (.env) for DB, ports, and legal vacation length
+
 ## Testing
 
 ### Unit tests
@@ -270,4 +297,31 @@ Additional tests could still improve confidence in edge cases and integration be
 
 ## Visuals
 
-  
+### React UI
+
+* **Home view:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/c16f6a9d-f195-4fee-b46b-5f20dfa8efcd" />  
+* **Details view:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/9ca7871f-fe9e-4552-a5d1-5d36922371be" />  
+* **Create/Edit view:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/15052456-7fd0-4c12-84f9-11b247f1d46e" />
+
+### ASP.NET MVC UI
+
+* **Index:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/cc2b3538-ca8c-4e08-9d27-9896962e6a4e" />  
+* **VacationRequest Index:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/72cda25b-d817-435e-9837-0a11ebd3444c" />  
+* **VacationRequest Details:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/58ec6cc8-f486-4f0c-a43d-5c2da9388180" />  
+* **VacationRequest Create/Edit:**  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/d940139f-b0e5-466c-9fdd-729d49ab36bb" />
+
+
+## Improvements & scaling possibilities
+
+### Multiple users and JWT authentication
+For this project to be production-ready, it needs to the capability for multiple employees with users registration and login, JWT and refreshtoken generation, password recovery and email validation. It could also benefit from external authentication provider like Google or Microsoft which eliminates the reason for newcomers to make yet another account to start using the admin page of the application.
+
+### Multi-tenancy
+I like to think about every project as a potential SaaS candidate. In this case, it would be a good idea to introduce an abstraction layer and move one or levels higher in the database design to allow other companies and multiple users to use the solution as well. The current approach focuses on a single company with a single employee and their vacation requests, but it could be extended to support multiple employees and companies, each with their own employees with their vacation requests.
