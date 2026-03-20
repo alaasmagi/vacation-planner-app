@@ -57,7 +57,7 @@ npm i; npm run start
 
 <img width="305" height="308" alt="image" src="https://github.com/user-attachments/assets/950e5934-2499-4185-bbc4-29c94287bc47" />
 
-* **No relationships**- only a single entity.
+**No relationships**- only a single entity.
 
 ### Backend structure
 
@@ -115,7 +115,15 @@ vacation-planner-backend
 #### alaasmagi.Base.* NuGet packages
 The core and base logic of the application is modularized into separate NuGet packages **alaasmagi.Base.** [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain), containing reusable domain models, shared abstractions and foundational realisation components. This package is developed and maintained by myself and serves as a shared base across projects.
 
+The project currently contains these NuGet packages:
 
+- `alaasmagi.Base.Domain` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Domain)
+- `alaasmagi.Base.Contracts.DTO` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DTO)
+- `alaasmagi.Base.DTO` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.DTO)
+- `alaasmagi.Base.Contracts.DataAccess` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DataAccess)
+- `alaasmagi.Base.DataAccess.EF` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.DataAccess.EF)
+- `alaasmagi.Base.Contracts.Application` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.Application)
+- `alaasmagi.Base.Application` [NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Application)
 
 
 #### Domain layer
