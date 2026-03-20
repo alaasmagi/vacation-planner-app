@@ -193,7 +193,7 @@ VacationRequestEntity inherits from **BaseEntityWithMeta** which is part of the 
 * **VacationRequestDto** & **VactionRequestWebDto:** DTOs which hide the unnecessary datafields from UI and API
 * **VacationRequestError:** Static class which holds standardised error code and message for duplicate vacation request entry
 * Mappers for each of the DTOs: **VacationRequestMapper**, **VacationRequestDtoMapper** & **VacationRequestWebDtoMapper**  
-Both mappers inherit from **IMapper** which is part of the NuGet package **alaasmagi.Base.Contracts.DTO**. For more details, click [here](#alaasmagibase-nuget-packages).
+All of the three mappers inherit from **IMapper** which is part of the NuGet package **alaasmagi.Base.Contracts.DTO**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### Helpers
 * **EnvInitializer:** Responsible for providing all environment variables from `.env` file.
