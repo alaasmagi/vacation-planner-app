@@ -58,3 +58,125 @@ npm i; npm run start
 <img width="305" height="308" alt="image" src="https://github.com/user-attachments/assets/950e5934-2499-4185-bbc4-29c94287bc47" />
 
 * **No relationships**- only a single entity.
+
+### Backend structure
+
+```
+vacation-planner-backend
+  ├── app.db
+  ├── Application
+  │   ├── Application.csproj
+  │   └── VacationRequestService.cs
+  ├── Contract
+  │   ├── Application
+  │   ├── Contract.csproj
+  │   └── DataAccess
+  ├── DataAccess
+  │   ├── AppDbContext.cs
+  │   ├── AppDbContextFactory.cs
+  │   ├── DataAccess.csproj
+  │   ├── DataAccessUow.cs
+  │   ├── Migrations
+  │   └── VacationRequestRepository.cs
+  ├── Directory.Build.props
+  ├── Domain
+  │   ├── Domain.csproj
+  │   ├── EVacationStatus.cs
+  │   └── VacationRequest.cs
+  ├── DTO
+  │   ├── DataAccess
+  │   ├── DTO.csproj
+  │   ├── Error
+  │   └── Presentation
+  ├── Helpers
+  │   ├── EnvInitializer.cs
+  │   └── Helpers.csproj
+  ├── Infrastructure
+  │   └── Infrastructure.csproj
+  ├── Test
+  │   ├── DomainTest.cs
+  │   ├── MapperTest.cs
+  │   ├── RepositoryTest.cs
+  │   ├── ServiceTest.cs
+  │   ├── Test.csproj
+  │   └── TestHelpers.cs
+  ├── vacation-planner-backend.sln
+  └── Web
+      ├── ApiControllers
+      ├── appsettings.Development.json
+      ├── appsettings.json
+      ├── Controllers
+      ├── Models
+      ├── Program.cs
+      ├── Properties
+      ├── Views
+      ├── Web.csproj
+      └── wwwroot
+```
+
+#### Domain layer
+
+* **VacationRequest:**
+
+```csharp
+public class VacationRequest(int defaultVacationLength) : BaseEntity
+{ 
+    public Guid EmployeeId { get; set; }
+    public DateOnly StartDate { get; set; }
+    public DateOnly EndDate { get; set; }
+    public string? Comment { get; set; }
+    public EVacationStatus Status { get; set; }
+    
+    public bool IsValid => EndDate > StartDate 
+                           && StartDate >= DateOnly.FromDateTime(DateTime.Today);
+
+    public int DurationDays => EndDate.DayNumber - StartDate.DayNumber;
+    public bool IsOverTime => DurationDays > defaultVacationLength;
+}
+```
+
+The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package alaasmagi.Base.Domain (NuGet link[https://www.nuget.org/packages/alaasmagi.Base.Domain/1.0.10], GitHub link[https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain]), which is published and maintained by myself:
+
+```csharp
+/// <summary>
+/// Provides a base entity implementation that uses <see cref="Guid"/> as the identifier type.
+/// </summary>
+public abstract class BaseEntity : BaseEntity<Guid>
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BaseEntity"/> class with a new identifier value.
+    /// </summary>
+    protected BaseEntity()
+    {
+        Id = Guid.NewGuid();
+    }
+}
+
+/// <summary>
+/// Provides a base entity implementation with a strongly typed identifier.
+/// </summary>
+/// <typeparam name="TKey">The identifier type of the entity.</typeparam>
+public abstract class BaseEntity<TKey> : IBaseEntity<TKey>
+    where TKey : IEquatable<TKey>
+{
+    /// <summary>
+    /// Gets or sets the unique identifier of the entity.
+    /// </summary>
+    [Required]
+    public virtual TKey Id { get; set; } = default!;
+}
+```
+
+* **EVacationStatus:**
+
+```csharp
+public enum EVacationStatus
+{
+    Pending,
+    Approved,
+    Rejected,
+}
+```
+
+
+  
