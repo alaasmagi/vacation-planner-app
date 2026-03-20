@@ -19,9 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 var envInitializer = new EnvInitializer();
 envInitializer.InitializeEnv();
 
-if (envInitializer.BackendPort > 0)
+if (envInitializer.BackendUrl != string.Empty)
 {
-    builder.WebHost.UseUrls($"http://localhost:{envInitializer.BackendPort}");
+    builder.WebHost.UseUrls(envInitializer.BackendUrl);
 }
 
 // Services
