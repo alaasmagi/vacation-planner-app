@@ -1,6 +1,6 @@
 using Base.Contracts.DataAccess;
 
-namespace Contract.Application;
+namespace Contract.DataAccess;
 
 public interface IDataAccessUow : IBaseUow
 {

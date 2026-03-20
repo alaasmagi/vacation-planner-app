@@ -1,3 +1,4 @@
+using Contract.Application;
 using Contract.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,8 @@ namespace Web.Controllers
         // GET: VacationRequest
         public async Task<IActionResult> Index()
         {
-            return View(await _service.GetAllAsync());
+            var response = await _service.GetAllAsync();
+            return View(response.Value);
         }
 
         // GET: VacationRequest/Details/ID

@@ -1,4 +1,5 @@
 using Base.Contracts.DTO;
+using Contract.Application;
 using Contract.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,7 @@ namespace Web.ApiControllers
             }
 
             var result = _mapper.Map(response.Value);
-            return result;
+            return Ok(result);
         }
 
         // PUT: api/VacationRequest/ID
@@ -59,22 +60,16 @@ namespace Web.ApiControllers
                 return BadRequest();
             }
 
-            try
+            var mappedRequest = _mapper.Map(vacationRequest);
+            var response = await _service.UpdateAsync(id, mappedRequest!);
+            
+            if (!response.Successful)
             {
-                var mappedRequest = _mapper.Map(vacationRequest);
-                await _service.UpdateAsync(id, mappedRequest!);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await VacationRequestEntityExists(id))
-                {
-                    return NotFound();
-                }
-                
-                throw;
+                return BadRequest(response.Error);
             }
 
-            return NoContent();
+            var result = _mapper.Map(response.Value);
+            return Ok(result);
         }
 
         // POST: api/VacationRequest
@@ -83,9 +78,15 @@ namespace Web.ApiControllers
         public async Task<ActionResult<VacationRequestWebDto>> PostVacationRequestEntity(VacationRequestWebDto vacationRequest)
         {
             var mappedRequest = _mapper.Map(vacationRequest);
-            await _service.CreateAsync(mappedRequest!);
+            var response = await _service.CreateWithValidationAsync(mappedRequest!);
             
-            return CreatedAtAction("GetVacationRequestEntity", new { id = vacationRequest.Id }, mappedRequest);
+            if (!response.Successful)
+            {
+                return BadRequest(response.Error);
+            }
+            
+            var result = _mapper.Map(response.Value);
+            return Ok(result);
         }
 
         // DELETE: api/VacationRequest/ID
@@ -100,12 +101,6 @@ namespace Web.ApiControllers
             }
 
             return NoContent();
-        }
-
-        private async Task<bool> VacationRequestEntityExists(Guid id)
-        {
-            var response = await _service.ExistsAsync(id);
-            return response.Successful;
         }
     }
 }
