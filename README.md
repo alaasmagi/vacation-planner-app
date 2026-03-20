@@ -91,8 +91,6 @@ vacation-planner-backend
   ├── Helpers
   │   ├── EnvInitializer.cs
   │   └── Helpers.csproj
-  ├── Infrastructure
-  │   └── Infrastructure.csproj
   ├── Test
   │   ├── DomainTest.cs
   │   ├── MapperTest.cs
@@ -113,6 +111,10 @@ vacation-planner-backend
       ├── Web.csproj
       └── wwwroot
 ```
+
+#### Base NuGet package
+
+
 
 #### Domain layer
 
@@ -135,37 +137,7 @@ public class VacationRequest(int defaultVacationLength) : BaseEntity
 }
 ```
 
-The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package **alaasmagi.Base.Domain** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Domain/1.0.10), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain)), which is published and maintained by myself:
-
-```csharp
-/// <summary>
-/// Provides a base entity implementation that uses <see cref="Guid"/> as the identifier type.
-/// </summary>
-public abstract class BaseEntity : BaseEntity<Guid>
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BaseEntity"/> class with a new identifier value.
-    /// </summary>
-    protected BaseEntity()
-    {
-        Id = Guid.NewGuid();
-    }
-}
-
-/// <summary>
-/// Provides a base entity implementation with a strongly typed identifier.
-/// </summary>
-/// <typeparam name="TKey">The identifier type of the entity.</typeparam>
-public abstract class BaseEntity<TKey> : IBaseEntity<TKey>
-    where TKey : IEquatable<TKey>
-{
-    /// <summary>
-    /// Gets or sets the unique identifier of the entity.
-    /// </summary>
-    [Required]
-    public virtual TKey Id { get; set; } = default!;
-}
-```
+The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package **alaasmagi.Base.Domain** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Domain), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain)), which is published and maintained by myself.
 
 * **EVacationStatus:**
 
@@ -178,5 +150,35 @@ public enum EVacationStatus
 }
 ```
 
+#### Application layer
+* **VacationRequestService** - Responsible for applying business rules and communicating with database via **IVacationRequestRepository** interface
+VacationRequestService class inherits from BaseService class, which is part of the NuGet package **alaasmagi.Base.Application** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Application), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Application)), which is published and maintained by myself.
 
+#### Contract layer
+* **IVacationRequestService**
+* **IVacationRequestRepository**
+IVacationRequestService inherits from IBaseService interface and IVacationRequesRepository inherits from IBaseRepository. Both base interfaces come from NuGet packages **alaasmagi.Base.Contracts.Application** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.Application), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Contracts.Application)) and  **alaasmagi.Base.Contracts.DataAccess** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DataAccess), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Contracts.DataAccess)), which are published and maintained by myself.
+
+#### DTO layer
+* **VacationRequestEntity** - Database entity which keeps both Domain data and meta data
+VacationRequestEntity inherits from BaseEntityWithMeta which is part of
+* **VacationRequestDto** & **VactionRequestWebDto** - DTOs which hide the unnecessary fields from UI and API  
+* **VacationRequestError** - Static class which holds standardised error code and message for duplicate vacation request entry
+* Mappers for each of the DTOs - **VacationRequestMapper**, **VacationRequestDtoMapper** & **VacationRequestWebDtoMapper**
+
+#### Web layer
+* **BookingService** - Responsible for validating external input, fetching data via IBookingRepository, mapping data into Data Transfer Objects(DTOs) via BookingMapper. 
+* **TableService** - Responsible for validating external input, fetching data via ITableRepository, mapping data into Data Transfer Objects(DTOs) via TableMapper. 
+* **Contracts** - IRepository, IBookingRepository, ITableRepository
+* **DTOs** - BookingDto, CreateBookingDto, PositionDto, TableDto, VerifyPasswordDto
+* **Exceptions** - ApiException, ConflictException, NotFoundException, ValidationException
+* **Mappers** - BookingMapper, TableMapper
+
+#### Helpers
+* **BookingService** - Responsible for validating external input, fetching data via IBookingRepository, mapping data into Data Transfer Objects(DTOs) via BookingMapper. 
+* **TableService** - Responsible for validating external input, fetching data via ITableRepository, mapping data into Data Transfer Objects(DTOs) via TableMapper. 
+* **Contracts** - IRepository, IBookingRepository, ITableRepository
+* **DTOs** - BookingDto, CreateBookingDto, PositionDto, TableDto, VerifyPasswordDto
+* **Exceptions** - ApiException, ConflictException, NotFoundException, ValidationException
+* **Mappers** - BookingMapper, TableMapper
   
