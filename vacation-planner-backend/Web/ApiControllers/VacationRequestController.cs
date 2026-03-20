@@ -61,7 +61,7 @@ namespace Web.ApiControllers
             }
 
             var mappedRequest = _mapper.Map(vacationRequest);
-            var response = await _service.UpdateAsync(id, mappedRequest!);
+            var response = await _service.UpdateAsync(id, mappedRequest!, vacationRequest.EmployeeId);
             
             if (!response.Successful)
             {
@@ -78,7 +78,7 @@ namespace Web.ApiControllers
         public async Task<ActionResult<VacationRequestWebDto>> PostVacationRequestEntity(VacationRequestWebDto vacationRequest)
         {
             var mappedRequest = _mapper.Map(vacationRequest);
-            var response = await _service.CreateWithValidationAsync(mappedRequest!);
+            var response = await _service.CreateWithValidationAsync(mappedRequest!, vacationRequest.EmployeeId);
             
             if (!response.Successful)
             {

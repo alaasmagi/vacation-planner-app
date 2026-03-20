@@ -18,7 +18,7 @@ public class VacationRequestService : BaseService<VacationRequestDto, VacationRe
         _repository = serviceRepository;
     }
 
-    public async Task<IMethodResponse<VacationRequestDto>> CreateWithValidationAsync(VacationRequestDto dto)
+    public async Task<IMethodResponse<VacationRequestDto>> CreateWithValidationAsync(VacationRequestDto dto, Guid? actor)
     {
         var exists = await _repository.ExistsAsync(dto.EmployeeId, dto.StartDate, dto.EndDate);
         
@@ -27,7 +27,7 @@ public class VacationRequestService : BaseService<VacationRequestDto, VacationRe
             return MethodResponse<VacationRequestDto>.Failure(CreateError(VacationRequestErrors.Codes.DuplicateEntry,
                 VacationRequestErrors.Messages.DuplicateEntry));
         }
-
-        return await base.CreateAsync(dto);
+        
+        return actor.HasValue ? await base.CreateAsync(dto, actor.Value) : await base.CreateAsync(dto);
     }
 }

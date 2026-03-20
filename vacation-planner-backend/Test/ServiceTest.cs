@@ -51,7 +51,7 @@ public class ServiceTest
         var service = new VacationRequestService(uowMock.Object, repositoryMock.Object, mapperMock.Object);
         var dto = CreateDto(Guid.NewGuid(), new DateOnly(2026, 07, 01), new DateOnly(2026, 07, 05));
 
-        var response = await service.CreateWithValidationAsync(dto);
+        var response = await service.CreateWithValidationAsync(dto, null);
 
         Assert.That(response.Successful, Is.False);
     }
@@ -61,7 +61,7 @@ public class ServiceTest
     {
         var dto = CreateDto(Guid.NewGuid(), new DateOnly(2026, 08, 10), new DateOnly(2026, 08, 15));
 
-        var response = await _service.CreateWithValidationAsync(dto);
+        var response = await _service.CreateWithValidationAsync(dto, null);
 
         Assert.Multiple(() =>
         {
