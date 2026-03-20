@@ -219,6 +219,61 @@ The project has two UIs:
 * **PUT** - `/api/VacationRequest/{ID}`: Updates one VacationRequest.
 * **DELETE** - `/api/VacationRequest/{ID}`: Deletes one VacationRequest.
 
+### Frontend structure
+```
+src
+├── api
+│   └── index.ts
+├── assets
+│   ├── hero.png
+│   ├── react.svg
+│   └── vite.svg
+├── components
+│   ├── Entry.tsx
+│   ├── Loading.tsx
+│   └── VacationRequestForm.tsx
+├── index.css
+├── main.tsx
+├── models
+│   └── index.ts
+├── routing
+│   └── router.tsx
+├── types
+│   └── index.ts
+├── utils
+│   ├── index.ts
+│   └── ui.ts
+└── views
+    ├── Details.tsx
+    ├── Edit.tsx
+    └── Home.tsx
+```
 
+* **Api** - Uses Axios methods to fetch necessary data from backend.
+* **Assets** - Default assets for react.
+* **Router** - Handles navigation between views.
+* **Types** - Consists of DTOs for API usage.
+* **Models** - Consist of helper data model for mapping the statuses.
+* **Utils** - Consists of helper functions that are used for displaying error messages to UI, computing date overlapping etc.
+
+#### Components
+* **Entry** - Visual component for displaying one vacation request.
+* **Loading** - Visual component for displaying loading state.
+* **VacationRequestForm** - Visual and functional component for getting input for VacationRequest.
+
+#### Views
+* **Home** - View for employees to display all their VacationRequest.
+* **Details** - View for employees to display one specific VacationRequest.
+* **Edit** - View for employess to create or edit VacationRequest.
+
+## Testing
+
+### Unit tests
+Unit tests in this project focus on the backend’s core logic, repository layer, domain rules, and mapper behavior rather than the web layer. The service layer is covered through vacation request creation, updates, deletion, and retrieval flows, with specific checks that overlapping date ranges for the same employee are detected and duplicate requests are rejected. Repository tests validate CRUD operations and overlap detection against the real data access layer using an isolated in-memory SQLite database, which keeps the test suite fast and stable. Mapper tests verify correct translation between domain, database, and DTO models, including default values, computed fields, and collection mapping. There are also direct domain tests for date validity, vacation duration calculation, and overtime vacation logic. Overall, the suite provides solid coverage of the application’s business rules and data transformations without adding the overhead of HTTP-layer testing.
+
+### Testing improvement
+Additional tests could still improve confidence in edge cases and integration behavior. Useful next additions would include HTTP endpoint tests for request validation and response codes, service and repository tests for boundary date cases such as adjacent non-overlapping ranges, update scenarios that should preserve existing data correctly, and failure-path tests for invalid DTO input or missing entities. It would also be valuable to add broader integration or application startup tests to verify configuration, dependency wiring, and database initialization in a production-like setup.
+
+## Visuals
 
   
