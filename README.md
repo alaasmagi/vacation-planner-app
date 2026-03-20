@@ -113,7 +113,7 @@ vacation-planner-backend
 ```
 
 #### alaasmagi.Base.* NuGet packages
-The core and base logic of the application is modularized into separate NuGet packages **alaasmagi.Base.*** [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain), containing reusable domain models, shared abstractions and foundational realisation components. This package is developed and maintained by myself and serves as a shared base across projects.
+The core and base logic of the application is modularized into separate NuGet packages **alaasmagi.Base.*** ([GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain)), containing reusable domain models, shared abstractions and foundational realisation components. This package is developed and maintained by myself and serves as a shared base across projects.
 
 The project currently contains these NuGet packages:
 
@@ -147,7 +147,31 @@ public class VacationRequest(int defaultVacationLength) : BaseEntity
 }
 ```
 
-The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package **alaasmagi.Base.Domain** package. For more details, click [here](#alaasmagibase-nuget-packages)
+The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package **alaasmagi.Base.Domain** package. For more details, click [here](#alaasmagibase-nuget-packages).
+
+* **BaseEntity:**
+```csharp
+public abstract class BaseEntity : BaseEntity<Guid>
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BaseEntity"/> class with a new identifier value.
+    /// </summary>
+    protected BaseEntity()
+    {
+        Id = Guid.NewGuid();
+    }
+}
+
+public abstract class BaseEntity<TKey> : IBaseEntity<TKey>
+    where TKey : IEquatable<TKey>
+{
+    /// <summary>
+    /// Gets or sets the unique identifier of the entity.
+    /// </summary>
+    [Required]
+    public virtual TKey Id { get; set; } = default!;
+}
+```
 
 * **EVacationStatus:**
 
@@ -161,28 +185,37 @@ public enum EVacationStatus
 ```
 
 #### Application layer
-* **VacationRequestService** - Responsible for applying business rules and communicating with database via **IVacationRequestRepository** interface
-VacationRequestService class inherits from BaseService class, which is part of the NuGet package **alaasmagi.Base.Application** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Application), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Application)), which is published and maintained by myself.
+* **VacationRequestService** - Responsible for applying business rules and communicating with database via **IVacationRequestRepository** interface  
+**VacationRequestService** class inherits from **BaseService** class, which is part of the NuGet package **alaasmagi.Base.Application**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### Contract layer
 * **IVacationRequestService**
 * **IVacationRequestRepository**
-IVacationRequestService inherits from IBaseService interface and IVacationRequesRepository inherits from IBaseRepository. Both base interfaces come from NuGet packages **alaasmagi.Base.Contracts.Application** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.Application), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Contracts.Application)) and  **alaasmagi.Base.Contracts.DataAccess** ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Contracts.DataAccess), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Contracts.DataAccess)), which are published and maintained by myself.
+IVacationRequestService inherits from IBaseService interface and IVacationRequesRepository inherits from IBaseRepository. Both base interfaces are a part of NuGet packages **alaasmagi.Base.Contracts.Application** and **alaasmagi.Base.Contracts.DataAccess**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### DTO layer
 * **VacationRequestEntity** - Database entity which keeps both Domain data and meta data
-VacationRequestEntity inherits from BaseEntityWithMeta which is part of
-* **VacationRequestDto** & **VactionRequestWebDto** - DTOs which hide the unnecessary fields from UI and API  
+VacationRequestEntity inherits from **BaseEntityWithMeta** which is part of the NuGet package **alaasmagi.Base.Domain**. For more details, click [here](#alaasmagibase-nuget-packages).
+* **VacationRequestDto** & **VactionRequestWebDto** - DTOs which hide the unnecessary datafields from UI and API
 * **VacationRequestError** - Static class which holds standardised error code and message for duplicate vacation request entry
 * Mappers for each of the DTOs - **VacationRequestMapper**, **VacationRequestDtoMapper** & **VacationRequestWebDtoMapper**
+Both mappers inherit from **IMapper** which is part of the NuGet package **alaasmagi.Base.Contracts.DTO**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### Web layer
-* **BookingService** - Responsible for validating external input, fetching data via IBookingRepository, mapping data into Data Transfer Objects(DTOs) via BookingMapper. 
-* **TableService** - Responsible for validating external input, fetching data via ITableRepository, mapping data into Data Transfer Objects(DTOs) via TableMapper. 
-* **Contracts** - IRepository, IBookingRepository, ITableRepository
-* **DTOs** - BookingDto, CreateBookingDto, PositionDto, TableDto, VerifyPasswordDto
-* **Exceptions** - ApiException, ConflictException, NotFoundException, ValidationException
-* **Mappers** - BookingMapper, TableMapper
+* **Controllers** - 
+* **ApiControllers** -
+
+**dotnet commands for controller scaffolding:**  
+For MVC controller:  
+```
+dotnet aspnet-codegenerator controller -name VacationRequestController -m VacationRequestEntity -dc AppDbContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -f 
+```
+For API controller:  
+```
+dotnet aspnet-codegenerator controller -name VacationRequestController -m VacationRequestEntity -dc AppDbContext --relativeFolderPath ApiControllers --useDefaultLayout --referenceScriptLibraries -api -f 
+```
+
+The generated controllers were heavily modified to align with the architecture, ensuring that all CRUD operations are performed through the application layer instead of directly accessing the dbContext.
 
 #### Helpers
 * **BookingService** - Responsible for validating external input, fetching data via IBookingRepository, mapping data into Data Transfer Objects(DTOs) via BookingMapper. 
