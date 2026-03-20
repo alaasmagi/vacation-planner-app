@@ -267,13 +267,13 @@ src
 ## Design choices
 
 ### Database  
-I kept persistence lightweight with SQLite and a single-entity data model. That keeps the schema small, easy to reason about, and fast to evolve. IDs use GUIDs (via the shared BaseEntity), which is a standard, low-collision approach. For request state I use an enum (Pending/Approved/Rejected) to avoid stringly-typed status bugs.
+I kept persistence lightweight with SQLite and a single-entity data model. That keeps the schema small, easy to reason about and fast to evolve. IDs use GUIDs (via the shared BaseEntity), which is a standard, low-collision approach. For request state I use an enum (Pending/Approved/Rejected) to avoid stringly-typed status bugs.
 
 ### Backend
-The backend follows a clean, layered structure: Domain holds the core entity and rules, Application contains the business service, DataAccess isolates EF Core and repositories, and Web exposes both MVC and REST endpoints. Contracts and DTOs sit between layers to keep dependencies explicit and map only the fields needed for each boundary. I also reuse my own alaasmagi.Base.* NuGet packages for shared abstractions and base classes, so the project stays consistent with other apps.
+The backend follows a clean, layered structure: Domain holds the core entity and rules, Application contains the business service, DataAccess isolates EF Core and repositories and Web exposes both MVC and REST endpoints. Contracts and DTOs sit between layers to keep dependencies explicit and map only the fields needed for each boundary. I also reuse my own alaasmagi.Base.* NuGet packages for shared abstractions and base classes, so the project stays consistent with other apps.
 
 ### Frontend
-The client is a focused React + TypeScript SPA used by employees. It talks to the REST API and keeps the UI simple: submit a request, view existing requests, and check status. Admins/managers use the separate MVC UI served by the backend, so the employee-facing SPA stays clean and lightweight.
+The client is a focused React + TypeScript SPA used by employees. It talks to the REST API and keeps the UI simple: submit a request, view existing requests and check status. Admins/managers use the separate MVC UI served by the backend, so the employee-facing SPA stays clean and lightweight.
 
 ## Features
 
@@ -285,12 +285,12 @@ Main application features include:
 * Full CRUD REST API for vacation requests
 * React SPA for employees
 * MVC UI for managers/admins
-* Environment-driven configuration (.env) for DB, ports, and legal vacation length
+* Environment-driven configuration (.env) for DB, ports and legal vacation length
 
 ## Testing
 
 ### Unit tests
-Unit tests in this project focus on the backend’s core logic, repository layer, domain rules, and mapper behavior rather than the web layer. The service layer is covered through vacation request creation, updates, deletion, and retrieval flows, with specific checks that overlapping date ranges for the same employee are detected and duplicate requests are rejected. Repository tests validate CRUD operations and overlap detection against the real data access layer using an isolated in-memory SQLite database, which keeps the test suite fast and stable. Mapper tests verify correct translation between domain, database, and DTO models, including default values, computed fields, and collection mapping. There are also direct domain tests for date validity, vacation duration calculation, and overtime vacation logic. Overall, the suite provides solid coverage of the application’s business rules and data transformations without adding the overhead of HTTP-layer testing.
+Unit tests in this project are implemented using the NUnit framework and focus on the backend’s core logic, repository layer, domain rules and mapper behavior rather than the web layer. The service layer is covered through vacation request creation, updates, deletion and retrieval flows, with specific checks that overlapping date ranges for the same employee are detected and duplicate requests are rejected. Repository tests validate CRUD operations and overlap detection against the real data access layer using an isolated in-memory SQLite database, which keeps the test suite fast and stable. Mapper tests verify correct translation between domain, database and DTO models, including default values, computed fields and collection mapping. There are also direct domain tests for date validity, vacation duration calculation and overtime vacation logic. Overall, the suite provides solid coverage of the application’s business rules and data transformations without adding the overhead of HTTP-layer testing.
 
 ## Visuals
 
@@ -330,10 +330,10 @@ I like to think about every project as a potential SaaS candidate. In this case,
 
 ## Q&A
 
-### 1. How would you plan to automatically test the application? What types of tests would you write, which tools would you use, and what would be their purpose in the application?
-I have already implemented automated tests for DTO mappers, the service layer, and the data access layer. However, additional tests could further improve confidence, particularly around edge cases and integration behavior. Useful next additions include HTTP endpoint tests to validate request handling and response codes, as well as service and repository tests for boundary scenarios such as adjacent non-overlapping date ranges. Additional coverage could also include update scenarios to ensure existing data is preserved correctly. It would also be valuable to introduce broader integration tests (or application startup tests) to verify configuration, dependency injection wiring, and database initialization in a production-like environment.
+### 1. How would you plan to automatically test the application? What types of tests would you write, which tools would you use and what would be their purpose in the application?
+I have already implemented automated tests for DTO mappers, the service layer and the data access layer. However, additional tests could further improve confidence, particularly around edge cases and integration behavior. Useful next additions include HTTP endpoint tests to validate request handling and response codes, as well as service and repository tests for boundary scenarios such as adjacent non-overlapping date ranges. Additional coverage could also include update scenarios to ensure existing data is preserved correctly. It would also be valuable to introduce broader integration tests (or application startup tests) to verify configuration, dependency injection wiring and database initialization in a production-like environment.
 
 ### 2. If a user submits changes to the same vacation request simultaneously from two different devices, how should the application detect this and how should it behave in such a situation?
-I suggest adding a dedicated concurrency token to VacationEntity, for example RowVersion, to represent the current version of the record in the database. The value could be a hash derived from the previous version and the entity data. The API would send the latest version to the frontend, and the frontend would include it in subsequent update requests. On update, the API would compare the submitted version with the current value in the database. If they differ, it means another device has already updated the same request, and the API should return 409 Conflict. 
+I suggest adding a dedicated concurrency token to VacationEntity, for example RowVersion, to represent the current version of the record in the database. The value could be a hash derived from the previous version and the entity data. The API would send the latest version to the frontend and the frontend would include it in subsequent update requests. On update, the API would compare the submitted version with the current value in the database. If they differ, it means another device has already updated the same request and the API should return 409 Conflict. 
 
 
