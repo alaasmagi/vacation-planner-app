@@ -147,7 +147,7 @@ public class VacationRequest(int defaultVacationLength) : BaseEntity
 }
 ```
 
-The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package **alaasmagi.Base.Domain** package. For more details click [here](#alaasmagi.Base.* NuGet packages)
+The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package **alaasmagi.Base.Domain** package. For more details click [here](#alaasmagibase-nuget-packages))
 
 * **EVacationStatus:**
 
