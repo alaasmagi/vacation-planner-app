@@ -185,7 +185,7 @@ public enum EVacationStatus
 ```
 
 #### Application layer
-* **VacationRequestService** - Responsible for applying business rules and communicating with database via **IVacationRequestRepository** interface  
+* **VacationRequestService:** Responsible for applying business rules and communicating with database via **IVacationRequestRepository** interface  
 **VacationRequestService** class inherits from **BaseService** class, which is part of the NuGet package **alaasmagi.Base.Application**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### Contract layer
@@ -194,34 +194,31 @@ public enum EVacationStatus
 IVacationRequestService inherits from IBaseService interface and IVacationRequesRepository inherits from IBaseRepository. Both base interfaces are a part of NuGet packages **alaasmagi.Base.Contracts.Application** and **alaasmagi.Base.Contracts.DataAccess**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### DTO layer
-* **VacationRequestEntity** - Database entity which keeps both Domain data and meta data
+* **VacationRequestEntity:** Database entity which keeps both Domain data and meta data
 VacationRequestEntity inherits from **BaseEntityWithMeta** which is part of the NuGet package **alaasmagi.Base.Domain**. For more details, click [here](#alaasmagibase-nuget-packages).
-* **VacationRequestDto** & **VactionRequestWebDto** - DTOs which hide the unnecessary datafields from UI and API
-* **VacationRequestError** - Static class which holds standardised error code and message for duplicate vacation request entry
-* Mappers for each of the DTOs - **VacationRequestMapper**, **VacationRequestDtoMapper** & **VacationRequestWebDtoMapper**
+* **VacationRequestDto** & **VactionRequestWebDto:** DTOs which hide the unnecessary datafields from UI and API
+* **VacationRequestError:** Static class which holds standardised error code and message for duplicate vacation request entry
+* Mappers for each of the DTOs: **VacationRequestMapper**, **VacationRequestDtoMapper** & **VacationRequestWebDtoMapper**
 Both mappers inherit from **IMapper** which is part of the NuGet package **alaasmagi.Base.Contracts.DTO**. For more details, click [here](#alaasmagibase-nuget-packages).
 
-#### Web layer
-* **Controllers** - 
-* **ApiControllers** -
-
-**dotnet commands for controller scaffolding:**  
-For MVC controller:  
-```
-dotnet aspnet-codegenerator controller -name VacationRequestController -m VacationRequestEntity -dc AppDbContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries -f 
-```
-For API controller:  
-```
-dotnet aspnet-codegenerator controller -name VacationRequestController -m VacationRequestEntity -dc AppDbContext --relativeFolderPath ApiControllers --useDefaultLayout --referenceScriptLibraries -api -f 
-```
-
-The generated controllers were heavily modified to align with the architecture, ensuring that all CRUD operations are performed through the application layer instead of directly accessing the dbContext.
-
 #### Helpers
-* **BookingService** - Responsible for validating external input, fetching data via IBookingRepository, mapping data into Data Transfer Objects(DTOs) via BookingMapper. 
-* **TableService** - Responsible for validating external input, fetching data via ITableRepository, mapping data into Data Transfer Objects(DTOs) via TableMapper. 
-* **Contracts** - IRepository, IBookingRepository, ITableRepository
-* **DTOs** - BookingDto, CreateBookingDto, PositionDto, TableDto, VerifyPasswordDto
-* **Exceptions** - ApiException, ConflictException, NotFoundException, ValidationException
-* **Mappers** - BookingMapper, TableMapper
+* **EnvInitializer:** Responsible for providing all environment variables from `.env` file.
+
+#### Web layer
+* **Controllers:** MVC controller responsible for handling UI requests and returning views. This controller serves the MVC UI.
+* **ApiControllers:** REST API controllers responsible for handling HTTP requests and returning JSON responses. This controller serves the React UI.
+
+The project has two UIs:
+* **MVC UI:** Server-side UI used by administrators or managers.
+* **React UI:** Client-side application used by employees.
+
+#### Endpoints
+* **GET** - `/api/VacationRequest`: Fetches all VacationRequests.
+* **GET** - `/api/VacationRequest/{ID}`: Fetches one VacationRequest by ID.
+* **POST** - `/api/VacationRequest`: Creates one VacationRequest.
+* **PUT** - `/api/VacationRequest/{ID}`: Updates one VacationRequest.
+* **DELETE** - `/api/VacationRequest/{ID}`: Deletes one VacationRequest.
+
+
+
   
