@@ -1,4 +1,4 @@
-#vacation-planner-app
+# vacation-planner-app
 
 ## Short description
 * UI language: Estonian
