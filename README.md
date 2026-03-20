@@ -185,7 +185,7 @@ public enum EVacationStatus
 #### Contract layer
 * **IVacationRequestService**
 * **IVacationRequestRepository**
-IVacationRequestService inherits from IBaseService interface and IVacationRequesRepository inherits from IBaseRepository. Both base interfaces are a part of NuGet packages **alaasmagi.Base.Contracts.Application** and **alaasmagi.Base.Contracts.DataAccess**. For more details, click [here](#alaasmagibase-nuget-packages).
+IVacationRequestService implements IBaseService interface and IVacationRequesRepository inherits from IBaseRepository. Both base interfaces are a part of NuGet packages **alaasmagi.Base.Contracts.Application** and **alaasmagi.Base.Contracts.DataAccess**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### DTO layer
 * **VacationRequestEntity:** Database entity which keeps both Domain data and meta data
@@ -193,7 +193,7 @@ VacationRequestEntity inherits from **BaseEntityWithMeta** which is part of the 
 * **VacationRequestDto** & **VactionRequestWebDto:** DTOs which hide the unnecessary datafields from UI and API
 * **VacationRequestError:** Static class which holds standardised error code and message for duplicate vacation request entry
 * Mappers for each of the DTOs: **VacationRequestMapper**, **VacationRequestDtoMapper** & **VacationRequestWebDtoMapper**  
-All of the three mappers inherit from **IMapper** which is part of the NuGet package **alaasmagi.Base.Contracts.DTO**. For more details, click [here](#alaasmagibase-nuget-packages).
+All of the three mappers implement **IMapper** which is part of the NuGet package **alaasmagi.Base.Contracts.DTO**. For more details, click [here](#alaasmagibase-nuget-packages).
 
 #### Helpers
 * **EnvInitializer:** Responsible for providing all environment variables from `.env` file.
@@ -300,8 +300,9 @@ Additional tests could still improve confidence in edge cases and integration be
 ### React UI
 
 * **Home view:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/c16f6a9d-f195-4fee-b46b-5f20dfa8efcd" />  
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/c16f6a9d-f195-4fee-b46b-5f20dfa8efcd" /><img width="99" height="220" alt="Screenshot_20260320-191412" src="https://github.com/user-attachments/assets/4d0654a7-cf52-4600-8bea-4c25cf48ef12" />
 * **Details view:**  
+
 <img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/9ca7871f-fe9e-4552-a5d1-5d36922371be" />  
 * **Create/Edit view:**  
 <img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/15052456-7fd0-4c12-84f9-11b247f1d46e" />
