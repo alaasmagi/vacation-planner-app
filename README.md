@@ -135,7 +135,7 @@ public class VacationRequest(int defaultVacationLength) : BaseEntity
 }
 ```
 
-The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package alaasmagi.Base.Domain (NuGet link[https://www.nuget.org/packages/alaasmagi.Base.Domain/1.0.10], GitHub link[https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain]), which is published and maintained by myself:
+The **BaseEntity** class is not defined in this project itself, it comes from the NuGet package alaasmagi.Base.Domain ([NuGet link](https://www.nuget.org/packages/alaasmagi.Base.Domain/1.0.10), [GitHub link](https://github.com/alaasmagi/alaasmagi-base-nuget/tree/main/Base.Domain)), which is published and maintained by myself:
 
 ```csharp
 /// <summary>
