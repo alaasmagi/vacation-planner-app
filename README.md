@@ -18,7 +18,7 @@ Backend should have .env file in the backend root folder `/vacation-planner-back
 DB_CONNECTION=<your-db-path-for-development-mode>#Default value = "Data Source=app.db"
 DB_CONNECTION_DEVELOPMENT=<your-db-path-for-development-mode>#Default value = "Data Source=../app.db"
 FRONTEND_URL=<your-frontend-url-for-cors>
-BACKEND_PORT=<your-backend-port>
+BACKEND_URL=<your-backend-url>
 DEFAULT_VACATION_LENGTH=<legal-max-vacation-days>
 ```
 SQLite DB is located in the backend root folder `/vacation-planner-backend`  
@@ -28,7 +28,7 @@ If You want to use default values, you can just use the command `cp .env.example
 
 Frontend should also have .env file in the frontend root folder `/vacation-planner-client` which has following content:
 ```bash
-VITE_FRONTEND_PORT=<your-frontend-port>
+VITE_FRONTEND_URL=<your-frontend-url>
 VITE_API_URL=>your-backend-url>
 VITE_EMPLOYEE_ID=<hardcoded-employee-id-in-guid-format>#Default value: d2f1615f-4a3b-4e49-a8e2-75ecbf202d83
 VITE_DEFAULT_VACATION_LENGTH=<legal-max-vacation-days>
