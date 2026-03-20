@@ -153,9 +153,6 @@ The **BaseEntity** class is not defined in this project itself, it comes from th
 ```csharp
 public abstract class BaseEntity : BaseEntity<Guid>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BaseEntity"/> class with a new identifier value.
-    /// </summary>
     protected BaseEntity()
     {
         Id = Guid.NewGuid();
@@ -165,9 +162,6 @@ public abstract class BaseEntity : BaseEntity<Guid>
 public abstract class BaseEntity<TKey> : IBaseEntity<TKey>
     where TKey : IEquatable<TKey>
 {
-    /// <summary>
-    /// Gets or sets the unique identifier of the entity.
-    /// </summary>
     [Required]
     public virtual TKey Id { get; set; } = default!;
 }
