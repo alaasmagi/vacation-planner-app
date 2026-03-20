@@ -1,5 +1,3 @@
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/3ace232b-0001-42cb-8042-3afdfcc60d74" /># vacation-planner-app
-
 ## Short description
 * UI language: Estonian
 * Development year: **2026**
