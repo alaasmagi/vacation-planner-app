@@ -19,6 +19,11 @@ var builder = WebApplication.CreateBuilder(args);
 var envInitializer = new EnvInitializer();
 envInitializer.InitializeEnv();
 
+if (envInitializer.BackendPort > 0)
+{
+    builder.WebHost.UseUrls($"http://localhost:{envInitializer.BackendPort}");
+}
+
 // Services
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();

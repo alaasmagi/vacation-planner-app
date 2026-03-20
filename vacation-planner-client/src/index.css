@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
