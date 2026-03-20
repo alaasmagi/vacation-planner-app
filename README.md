@@ -1,3 +1,5 @@
+#vacation-planner-app
+
 ## Short description
 * UI language: Estonian
 * Development year: **2026**
