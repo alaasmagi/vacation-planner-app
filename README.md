@@ -292,9 +292,6 @@ Main application features include:
 ### Unit tests
 Unit tests in this project focus on the backend’s core logic, repository layer, domain rules, and mapper behavior rather than the web layer. The service layer is covered through vacation request creation, updates, deletion, and retrieval flows, with specific checks that overlapping date ranges for the same employee are detected and duplicate requests are rejected. Repository tests validate CRUD operations and overlap detection against the real data access layer using an isolated in-memory SQLite database, which keeps the test suite fast and stable. Mapper tests verify correct translation between domain, database, and DTO models, including default values, computed fields, and collection mapping. There are also direct domain tests for date validity, vacation duration calculation, and overtime vacation logic. Overall, the suite provides solid coverage of the application’s business rules and data transformations without adding the overhead of HTTP-layer testing.
 
-### Testing improvement
-Additional tests could still improve confidence in edge cases and integration behavior. Useful next additions would include HTTP endpoint tests for request validation and response codes, service and repository tests for boundary date cases such as adjacent non-overlapping ranges, update scenarios that should preserve existing data correctly, and failure-path tests for invalid DTO input or missing entities. It would also be valuable to add broader integration or application startup tests to verify configuration, dependency wiring, and database initialization in a production-like setup.
-
 ## Visuals
 
 ### React UI
@@ -330,3 +327,13 @@ For this project to be production-ready, it needs to the capability for multiple
 
 ### Multi-tenancy
 I like to think about every project as a potential SaaS candidate. In this case, it would be a good idea to introduce an abstraction layer and move one or levels higher in the database design to allow other companies and multiple users to use the solution as well. The current approach focuses on a single company with a single employee and their vacation requests, but it could be extended to support multiple employees and companies, each with their own employees with their vacation requests.
+
+## Q&A
+
+### 1. How would you plan to automatically test the application? What types of tests would you write, which tools would you use, and what would be their purpose in the application?
+I have already implemented automated tests for DTO mappers, the service layer, and the data access layer. However, additional tests could further improve confidence, particularly around edge cases and integration behavior. Useful next additions include HTTP endpoint tests to validate request handling and response codes, as well as service and repository tests for boundary scenarios such as adjacent non-overlapping date ranges. Additional coverage could also include update scenarios to ensure existing data is preserved correctly. It would also be valuable to introduce broader integration tests (or application startup tests) to verify configuration, dependency injection wiring, and database initialization in a production-like environment.
+
+### 2. If a user submits changes to the same vacation request simultaneously from two different devices, how should the application detect this and how should it behave in such a situation?
+I suggest adding a dedicated concurrency token to VacationEntity, for example RowVersion, to represent the current version of the record in the database. The value could be a hash derived from the previous version and the entity data. The API would send the latest version to the frontend, and the frontend would include it in subsequent update requests. On update, the API would compare the submitted version with the current value in the database. If they differ, it means another device has already updated the same request, and the API should return 409 Conflict. 
+
+
