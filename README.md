@@ -1,4 +1,4 @@
-# vacation-planner-app
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/3ace232b-0001-42cb-8042-3afdfcc60d74" /># vacation-planner-app
 
 ## Short description
 * UI language: Estonian
@@ -297,13 +297,14 @@ Unit tests in this project are implemented using the NUnit framework and focus o
 ### React UI
 
 * **Home view:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/c16f6a9d-f195-4fee-b46b-5f20dfa8efcd" />
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/37dd8b04-dbe1-495c-acc0-7424358cc52f" />
 
 * **Details view:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/9ca7871f-fe9e-4552-a5d1-5d36922371be" />
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/7b31f200-b57c-44ac-bb91-f02d29a318b6" />
 
 * **Create/Edit view:**  
-<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/15052456-7fd0-4c12-84f9-11b247f1d46e" />
+<img width="1728" height="1117" alt="image" src="https://github.com/user-attachments/assets/38252c5a-0cf2-4a90-82f1-924104d73667" />
+
 
 ### ASP.NET MVC UI
 
